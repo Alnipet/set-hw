@@ -6,11 +6,9 @@ import * as Characters from '../characters';
 
 const charactersArray = [];
 for (const key in Characters) {
-  const Character = new Characters[key]('Name', key);
+  const Character = new Characters[key]('name', key);
   charactersArray.push(Character);
 }
-
-console.log(charactersArray);
 
 test('Принимает игроков в команду', () => {
   const team = new Team();
@@ -25,4 +23,30 @@ test('Не принимает существующих игроков в ком�
   charactersArray.forEach((elem) => team.add(elem));
 
   expect(() => team.add(charactersArray[1])).toThrowError('Такой игрок уже существует в команде');
+});
+
+test('Принимает произвольное количество игроков в команду', () => {
+  const team = new Team();
+  const teamSet = new Set(charactersArray);
+  team.addAll(...charactersArray);
+
+  expect(team.members).toEqual(teamSet);
+});
+
+test('Принимает произвольное количество игроков в команду, не допускает задвоения', () => {
+  const team = new Team();
+  const teamSet = new Set(charactersArray);
+  team.addAll(...charactersArray);
+  team.addAll(...charactersArray);
+
+  expect(team.members).toEqual(teamSet);
+});
+
+test('Преобразует Set с командой в массив', () => {
+  const team = new Team();
+  const teamSet = Array.from(new Set(charactersArray));
+  team.addAll(...charactersArray);
+  team.toArray();
+
+  expect(team.members).toEqual(teamSet);
 });

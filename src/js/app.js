@@ -11,4 +11,12 @@ export default class Team {
 
     this.members.add(character);
   }
+
+  addAll(...characters) {
+    characters.forEach((character) => this.members.add(character));
+  }
+
+  toArray() {
+    this.members = Array.from(this.members);
+  }
 }
